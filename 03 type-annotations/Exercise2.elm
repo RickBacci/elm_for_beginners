@@ -1,10 +1,16 @@
+module Main exposing (..)
+
 import Html
 
--- Write the logic necessary to set the `freeQty` of each record using the
--- following logic:
--- Purchases of 5 or more receive 1 free.
--- Purchases of 10 or more receive 3 free.
 
+type alias Item =
+    { name : String
+    , qty : Int
+    , freeQty : Int
+    }
+
+
+cart : List Item
 cart =
     [ { name = "Lemon", qty = 1, freeQty = 0 }
     , { name = "Apple", qty = 5, freeQty = 0 }
@@ -13,20 +19,22 @@ cart =
     ]
 
 
+freeItems : Int -> Int -> Item -> Item
 freeItems quantity amount item =
     if item.qty >= quantity then
         { item
-          -- | freeQty = amount
             | freeQty = item.qty // quantity * amount
         }
     else
         item
 
 
+newCart : List Item
 newCart =
     List.map ((freeItems 5 1) >> (freeItems 10 3)) cart
 
 
+main : Html.Html msg
 main =
     newCart
         |> toString
